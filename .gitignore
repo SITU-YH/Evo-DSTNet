@@ -1,0 +1,14 @@
+# 忽略数据和模型
+datasets/
+checkpoints/
+*.pth
+*.onnx
+__pycache__/
+.ipynb_checkpoints/
+results/
+
+.eggs/
+basicsr.egg-info/
+experiments/
+tb_logger/
+wandb/

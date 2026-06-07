@@ -1,0 +1,43 @@
+name: Test_Cement_Base
+model_type: VideoRecurrentModel
+scale: 1
+num_gpu: 1
+manual_seed: 0
+
+datasets:
+  test_1:
+    name: GoPro
+    type: VideoRecurrentSplitClipsTestDataset
+    dataroot_gt: /root/autodl-tmp/DSTNet-plus/datasets/Cement/test/blur
+    dataroot_lq: /root/autodl-tmp/DSTNet-plus/datasets/Cement/test/blur
+    cache_data: False
+    io_backend:
+      type: disk
+
+    num_frame: 5
+    num_overlap: 0
+
+network_g:
+  type: DSTNetPlus_Final
+  num_feat: 64
+  num_kernel_block: 3
+  num_block: 15
+  nonblind_denoise: False
+
+path:
+  pretrain_network_g: /root/autodl-tmp/DSTNet-plus/checkpoints/DSTNetPlus_base_gopro.pth
+  strict_load_g: true
+
+val:
+  save_img: true
+  suffix: ~
+
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: false
