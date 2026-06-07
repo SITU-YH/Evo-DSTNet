@@ -1,144 +1,67 @@
-## 📖 Learning Efficient Deep Discriminative Spatial and Temporal Networks for Video Deblurring
 
-[![Hugging Face Models](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue)](https://huggingface.co/Meloo/DSTNetPlus)
-[![download](https://img.shields.io/github/downloads/sunny2109/DSTNet-plus/total.svg)](https://github.com/sunny2109/DSTNet-plus/releases)
-![visitors](https://visitor-badge.laobi.icu/badge?page_id=sunny2109/DSTNet-plus) 
-
-> [Jinshan Pan](https://jspan.github.io/), [Long Sun](https://github.com/sunny2109), [Boming Xu](https://github.com/xuboming8), [Jiangxin Dong](https://scholar.google.com/citations?user=ruebFVEAAAAJ&hl=zh-CN&oi=ao), and [Jinhui Tang](https://scholar.google.com/citations?user=ByBLlEwAAAAJ&hl=zh-CN)<br>
-> [IMAG Lab](https://imag-njust.net/), Nanjing University of Science and Technology
-
----
-This repo is a official implementation of "[Learning Efficient Deep Discriminative Spatial and Temporal Networks for Video Deblurring](https://ieeexplore.ieee.org/document/10948572)".
-
-DSTNet+ is an extension of [DSTNet](https://github.com/xuboming8/DSTNet).
+# Evo-DSTNet: 演进型时空视频去模糊与图像恢复网络
 
 
-## 📜 News
-- **2025.03.25**: All pretrained models and visual results are available.
-- **2025.03.25**: The paper can be found [here](https://github.com/sunny2109/DSTNet-plus/blob/main/figs/DstNetPlus_Manuscript.pdf).
-- **2025.03.14**: This paper is accepted by TPAMI.
-- **2024.01.08**: This repo is created.
+**Evo-DSTNet** 是一个先进的视频去模糊和图像恢复框架。本项目在 DSTNet-plus 的基础上进行了深度重构与演进，引入了类似 EVSSM 的架构优化思路，进一步增强了时空特征提取能力以及基于 Haar 小波变换的图像恢复效果。
 
-## 🚀 Quick Started
-### 1. Environment Set Up
-> - Python 3.9, PyTorch == 1.13
-> - BasicSR 1.4.2
-> - Platforms: Ubuntu 18.04, cuda-11
+## 🚀 核心特性
+
+* **进化的网络架构**：深度融合 Haar 小波分解与优化的时空注意力机制，实现高效且高精度的视频去模糊。
+* **基于 BasicSR 框架**：全面兼容稳定强大的 BasicSR 框架，代码结构清晰，易于配置、训练和二次开发。
+* **全面的评估指标**：内置对 PSNR, SSIM, NIQE 和 FID 等主流图像质量评估指标的支持。
+* **多数据集支持**：提供开箱即用的数据加载器，支持 GoPro, DVD, REDS, Vimeo90K 等经典图像恢复数据集。
+
+## 🛠️ 安装指南
+
+克隆本仓库并安装所需的依赖环境：
 
 ```bash
-git clone https://github.com/sunny2109/DSTNet-plus.git
-cd DSTNet-plus
-conda create -n dstnetplus python=3.9
-conda activate dstnetplus
-# Install dependent packages
+# 克隆仓库
+git clone [https://github.com/STYH-3524/Evo-DSTNet.git](https://github.com/STYH-3524/Evo-DSTNet.git)
+cd Evo-DSTNet
+
+# 安装依赖 (推荐使用 Python >= 3.8 和对应的 PyTorch 版本)
 pip install -r requirements.txt
-# Install cupy
-# Please make sure that the installed Cupy version matches your existing CUDA installation!
-pip install cupy-cuda11x
-# Install BasicSR
+
+# 编译并安装 (BasicSR标准安装方式)
 python setup.py develop
 ```
 
-### 2. Download datasets
-Used training and testing sets can be downloaded as follows:
+## 📂 数据集准备
 
-| Training Set     |  Pretrained model  | Visual Result  |
-| :----------      | :-------------: | :--------------: |
-| [GoPro](http://data.cv.snu.ac.kr:8008/webdav/dataset/GOPRO/GOPRO_Large.zip)                               | [Hugging Face](https://huggingface.co/Meloo/DSTNetPlus/tree/main) \| [Github](https://github.com/sunny2109/DSTNet-plus/releases/tag/v0.1.0) \| [Baidu Cloud](https://pan.baidu.com/s/19RyEG_LupAsfwpKYx-F9cA?pwd=DSTP) | [Hugging Face](https://huggingface.co/Meloo/DSTNetPlus/tree/main) or [Baidu Cloud](https://pan.baidu.com/s/15qSS5Hcsiu0y0-e3zsC3FQ?pwd=DSTP) |
-| [DVD](http://www.cs.ubc.ca/labs/imager/tr/2017/DeepVideoDeblurring/DeepVideoDeblurring_Dataset.zip)       | [Hugging Face](https://huggingface.co/Meloo/DSTNetPlus/tree/main) \| [Github](https://github.com/sunny2109/DSTNet-plus/releases/tag/v0.1.0) \| [Baidu Cloud](https://pan.baidu.com/s/19RyEG_LupAsfwpKYx-F9cA?pwd=DSTP) | [Hugging Face](https://huggingface.co/Meloo/DSTNetPlus/tree/main) or [Baidu Cloud](https://pan.baidu.com/s/15qSS5Hcsiu0y0-e3zsC3FQ?pwd=DSTP) |
-| [BSD](https://drive.google.com/file/d/1VJdyojIAriC5QZp2N_0umEqkIMk1_9HA/view?usp=sharing)                 | [Hugging Face](https://huggingface.co/Meloo/DSTNetPlus/tree/main) \| [Github](https://github.com/sunny2109/DSTNet-plus/releases/tag/v0.1.0) \| [Baidu Cloud](https://pan.baidu.com/s/19RyEG_LupAsfwpKYx-F9cA?pwd=DSTP) | [Hugging Face](https://huggingface.co/Meloo/DSTNetPlus/tree/main) or [Baidu Cloud](https://pan.baidu.com/s/15qSS5Hcsiu0y0-e3zsC3FQ?pwd=DSTP) |
-| [DAVIS-2017](https://data.vision.ee.ethz.ch/csergi/share/davis/DAVIS-2017-Unsupervised-trainval-480p.zip) | [Hugging Face](https://huggingface.co/Meloo/DSTNetPlus/tree/main) \| [Github](https://github.com/sunny2109/DSTNet-plus/releases/tag/v0.1.0) \| [Baidu Cloud](https://pan.baidu.com/s/19RyEG_LupAsfwpKYx-F9cA?pwd=DSTP) | [Hugging Face](https://huggingface.co/Meloo/DSTNetPlus/tree/main) or [Baidu Cloud](https://pan.baidu.com/s/15qSS5Hcsiu0y0-e3zsC3FQ?pwd=DSTP) |
+Evo-DSTNet 支持多种用于训练和评估的数据集。对于视频去模糊任务，我们强烈推荐从 **GoPro** 数据集开始。
 
+关于如何下载、组织和预处理数据，请参考详细文档：[docs/DatasetPreparation_CN.md](https://www.google.com/search?q=docs/DatasetPreparation_CN.md)。
 
-### 3. Run the training code
-```
-# train DSTNetPlus on GoPro dataset
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
-python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 python basicsr/train.py -opt options/train/train_base_GoPro.yml --launcher pytorch
+## 💻 模型训练
 
-# train DSTNetPlus on DVD dataset
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
-python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 python basicsr/train.py -opt options/train/train_base_DVD.yml --launcher pytorch
+你可以通过指定 YAML 配置文件来训练 Evo-DSTNet 模型。在我们的实验中，通常需要训练 60,000 次迭代 (iterations) 才能达到最佳的 PSNR/SSIM 表现。
 
-# train DSTNetPlus on BSD dataset
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
-python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 python basicsr/train.py -opt options/train/train_base_BSD1ms.yml --launcher pytorch
+```bash
+# 使用 GoPro 数据集训练 Evo-DSTNet 的单卡/多卡示例命令
+python basicsr/train.py -opt options/train/EvoDSTNet/train_EvoDSTNet_GoPro.yml
+
 ```
 
-### 4. Quick inference
-- Download the pretrained models. 
+*注：所有的训练配置和流程都由 `basicsr/train.py` 脚本统一管理。*
 
-Please download the pretrained and put it in `./checkpoints/`.
+## 📊 测试与评估
 
-- Download the testing dataset. 
+使用以下命令及相应的测试配置文件，对训练好的模型进行质量评估：
 
-Please download the test dataset and put it in `./datasets/`.
-- Run the following commands:
+```bash
+# 测试示例命令
+python basicsr/test.py -opt options/test/EvoDSTNet/test_EvoDSTNet_GoPro.yml
+
 ```
-python basicsr/test.py -opt options/test/test_base_GoPro.yml
-cd results
-python merge_full.py
-```
-- The test results will be in './results'.
+
+## 📜 致谢
+
+本项目的实现离不开以下优秀的开源工作：
+
+* [BasicSR](https://github.com/XPixelGroup/BasicSR) - 开源的图像与视频恢复底层工具箱。
+* 原先的 [DSTNet-plus](https://github.com/sunny2109/DSTNet-plus) 仓库。
+
+同时，感谢 [EVSSM](https://github.com/kkkls/EVSSM) 相关前沿工作在架构演进思路上提供的灵感。
 
 
-## 👀 Results
-We achieve SOTA performance on a set of blurring datasets. Detailed results can be found in the paper. All visual results of DSTNetPlus can be downloaded [here](https://huggingface.co/Meloo/DSTNetPlus/tree/main/visual_results).
-
-<details>
-<summary>Click to expand</summary>
-
-- **Model efficiency** (PSNR vs. Runtime vs. Params) 
-<p align="center">
-<img width="800" src="figs/runtime.png"> 
-</p>
-
-- **Quantitative evaluations** <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Evaluation on **GoPro** dataset  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Evaluation on **DVD** dataset <br>
-
-<p align="center">
-    <img width="370" src="figs/table_gopro.png"> 
-    <img width="325" src="figs/table_dvd.png"
-</p>
-  
-
-- Quantitative evaluations on the BSD dataset
-<p align="center">
-  <img width="800" src="figs/table_bsd.png">
-</p>
-
-- Quantitative evaluations on the Set8 dataset
-<p align="center">
-  <img width="800" src="figs/table_set8.png">
-</p>
-
-
-- Deblurred results on **GoPro** dataset
-<p align="center">
-<img width="800" src="figs/gopro.png">
-</p>
-
-- Deblurred results on **DVD** dataset
-<p align="center">
-<img width="800" src="figs/dvd.png">
-</p>
-
-- Deblurred results on **Real-world** blurry frames
-<p align="center">
-<img width="800" src="figs/real_world.png">
-</p>
-</details>
-
-## 📧 Contact
-If you have any questions, please feel free to reach us out at cs.longsun@gmail.com
-
-## 📎 Citation 
-
-If you find our work helpful for your research, please consider giving a star ⭐ and citation 📝 
-```bibtex
-@article{DSTNetPlus,
-  title={Learning Efficient Deep Discriminative Spatial and Temporal Networks for Video Deblurring},
-  author={Pan, Jinshan and Sun, Long and Xu Boming and Dong, Jiangxin and Tang, Jinhui},
-  journal={TPAMI},
-  year={2025}
-}
